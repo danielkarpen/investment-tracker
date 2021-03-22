@@ -34,6 +34,10 @@
     "workbench.enableExperiments": false,
     "workbench.iconTheme": "eq-material-theme-icons-darker",
     "workbench.view.alwaysShowHeaderActions": true,
-    "cSpell.words": ["browserslist"]
+    "cSpell.words": [
+      "browserslist"
+    ],
+    "ponicode.testSettings.testLocation.locationType": "Same folder as source file",
+    "ponicode.testSettings.testLocation.path": "{rootDir}/{filePath}/{fileName}.test.{ext}"
   }
   
