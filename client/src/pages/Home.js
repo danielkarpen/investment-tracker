@@ -1,5 +1,12 @@
-import { Text } from '@chakra-ui/react';
+import { BaseCard } from 'components/base';
+import { LoginRegistration } from '../components';
 
-const Home = () => <Text fontSize="md">Hello Capstone Home Page!</Text>;
+function Home() {
+  return (
+    <BaseCard>
+      <LoginRegistration />
+    </BaseCard>
+  );
+}
 
 export default Home;
