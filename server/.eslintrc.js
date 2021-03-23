@@ -34,6 +34,7 @@ module.exports = {
         varsIgnorePattern: "^_",
       },
     ],
+    "node/no-missing-import": 1,
     "node/no-unsupported-features/es-syntax": [
       "warn",
       {
