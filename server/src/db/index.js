@@ -1,6 +1,15 @@
-/**
- * This one would, "import client from './client'",
- * and use that to do the CRUD things.
- *
- * You can 'absolutely import' this - or delete 🔥 if not using.
- */
+import client from "./client";
+
+export default {
+  async addThrowawayData(payload) {
+    try {
+      const results = await client
+        .db("investments")
+        .collection("data")
+        .insertOne(payload);
+      return results;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+};
