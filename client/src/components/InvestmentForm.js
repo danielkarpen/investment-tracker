@@ -17,6 +17,8 @@ function reducer(state, { type, payload }) {
       return { ...state, ...{ mode: 'collapsed', info: '' } };
     case 'activate-expanded-mode':
       return { ...state, ...{ mode: 'expanded', info: '' } };
+    case 'update-info':
+      return { ...state, ...{ info: payload } };
     default:
       throw new Error('Illegal 🙅🏾‍♂️ action! 💣');
   }
@@ -38,10 +40,10 @@ function InvestmentForm() {
     event.preventDefault();
     // TODO: Actually handle all of the fields
     const investment = Object.fromEntries(new FormData(event.target));
+    console.log(investment);
 
     switch (formState.mode) {
       case 'collapsed':
-        api.auth.show();
         break;
       case 'expanded':
         api.auth.create(investment.name, investment.partners).catch(error => {
@@ -55,12 +57,10 @@ function InvestmentForm() {
 
   function renderSubmitTxt(mode) {
     switch (formState.mode) {
-      case 'collapsed':
-        return 'Add Investment';
       case 'expanded':
         return 'Create Investment';
       default:
-        throw new Error('Illegal form mode');
+        return 'Create Investment';
     }
   }
 
@@ -73,8 +73,8 @@ function InvestmentForm() {
         </FormControl>
 
         <FormControl id="Partners" isRequired>
-          <FormLabel>Number of Partners</FormLabel>
-          <Input type="number" name="partners" />
+          <FormLabel>Primary Partner</FormLabel>
+          <Input type="text" name="partners" />
         </FormControl>
 
         <ButtonGroup variant="outline" spacing="6">
