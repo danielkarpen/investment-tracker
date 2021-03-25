@@ -2,7 +2,7 @@ import { Box, ChakraProvider, Grid, theme } from '@chakra-ui/react';
 import api from 'api';
 import { AuthContext } from 'context';
 import Layout from 'layout';
-import { AboutPage, DashboardPage, HomePage, LoginPage } from 'pages';
+import { AboutPage, DashboardPage, HomePage, LoginPage, ViewPage } from 'pages';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './index.css';
@@ -41,6 +41,9 @@ function App() {
                   </Route>
                   <Route exact path="/login">
                     <LoginPage />
+                  </Route>
+                  <Route exact path="/view">
+                    <ViewPage />
                   </Route>
                 </Switch>
               </Router>
