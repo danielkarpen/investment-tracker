@@ -12,7 +12,7 @@ export default {
       throw new Error(err);
     }
   },
-  async getInvestments() {
+  async getAllInvestments() {
     try {
       const cursor = await client.db("investments").collection("data").find();
       const results = await cursor.toArray();
@@ -21,6 +21,7 @@ export default {
       throw new Error(err);
     }
   },
+  // Todo get all investments for user
   async addPartnerToInvestment(investment, partner) {
     try {
       const results = await client
