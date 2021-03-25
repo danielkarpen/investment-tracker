@@ -1,4 +1,4 @@
-import { InvestmentForm } from 'components';
+import { InvestmentCard, InvestmentForm } from 'components';
 import { AuthContext } from 'context';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -35,6 +35,7 @@ function Dashboard() {
           : loggedInUser?.name}
       </p>
       <InvestmentForm />
+      <InvestmentCard />
     </>
   );
 }
