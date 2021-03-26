@@ -21,7 +21,20 @@ export default {
       throw new Error(err);
     }
   },
-  // Todo get all investments for user
+
+  async getUserInvestments(userEmail) {
+    try {
+      const cursor = await client
+        .db("investments")
+        .collection("data")
+        .find({ "partners.email": userEmail });
+      const results = await cursor.toArray();
+      return results;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
   async addPartnerToInvestment(investment, partner) {
     try {
       const results = await client
