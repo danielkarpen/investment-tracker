@@ -1,15 +1,14 @@
 import { Box } from '@chakra-ui/react';
 import api from 'api';
 import { InvestmentCard, InvestmentForm } from 'components';
-import { AuthContext } from 'context';
+import { AuthContext, InvestmentsContext } from 'context';
 import { useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 function Dashboard() {
   const { loggedInUser } = useContext(AuthContext);
-
-  console.log(loggedInUser, 'from Dashboard');
+  const { updateInvestments } = useContext(InvestmentsContext);
   const history = useHistory();
 
   const fetchInvestments = async () => {
@@ -29,6 +28,10 @@ function Dashboard() {
 
   if (isError) {
     return <Box className="text-red-500">{error.message}</Box>;
+  }
+
+  if (data?.length) {
+    updateInvestments(data);
   }
 
   return (
