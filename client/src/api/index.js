@@ -61,16 +61,22 @@ const api = {
     },
   },
   db: {
-    async create(path, payload) {
-      try {
-        const resp = await ky
-          .post(`${dbBase}/${path}`, { json: payload })
-          .json();
+    /**
+     * Get all investments for either a user or for everyone if 'admin.'
+     * @param {Object} user - user's ✉️
+     * @returns {[Object]}
+     */
+    async index(user) {
+      console.log('making a request with ', user);
+      const resp = await ky
+        .post(
+          `http://localhost:8080/investments/user`,
+          // Send user ✉️ JSON as request body
+          { json: user }
+        )
+        .json();
 
-        return resp;
-      } catch (error) {
-        throw new Error(error);
-      }
+      return resp;
     },
   },
 };
