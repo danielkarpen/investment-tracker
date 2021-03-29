@@ -4,13 +4,23 @@ import { Router } from "express";
 
 const router = new Router();
 
-// route for investments
-router.get("/", (_, res) => {
-  res.send("<h1>Investments</h1>");
-});
+router.get(
+  "/",
+  /**
+   * Example/base route
+   * {Response} res - send back HTML
+   */
+  (_, res) => {
+    res.send("<h1>Investments</h1>");
+  }
+);
 
+// TODO{daniel.karpan}: Consider using ids instead of the name
+
+// Get all investments in database ADMIN FEATURE
 router.post("/", async (req, res) => {
   try {
+    // TODO{daniel.karpan}: Use Firebase Auth SDK to verify JWT
     if (req.body.email !== config.admin) {
       throw new Error("Unauthorized");
     }
@@ -21,8 +31,10 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get all user investments by users email address
 router.post("/user", async (req, res) => {
   try {
+    // TODO{daniel.karpan}: Improve this to validate ✉️.
     const results = await db.getUserInvestments(req.body.email);
     res.json(results);
   } catch (err) {
@@ -40,7 +52,7 @@ router.post(
    */
   async ({ body }, res) => {
     try {
-      if (!body.investmentName) {
+      if (!body.investment) {
         res.status(400).json({ error: "Invalid investment name!" });
         return;
       }
@@ -65,10 +77,42 @@ router.post(
   }
 );
 
-// router.delete("/user", async (req, res) => {
-//   try {
-//     const r;
-//   }
-// });
+router.post(
+  "/investor",
+
+  /**
+   * Add an investor to an investment
+   * @params {Request} req
+   * @params {Response} resp
+   */
+  async (req, res) => {
+    try {
+      // TODO{daniel.karpan}: Verify ID for proper adding...
+
+      res
+        .status(201)
+        .json(
+          await db.addPartnerToInvestment(req.body.investment, req.body.partner)
+        );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
+
+router.delete("/", async (req, res) => {
+  try {
+    // TODO{daniel.karpan}: Consider if only admin can delete...
+
+    res.json(202).json(await db.deleteInvestment(req.body.investment));
+  } catch (error) {
+    if (error.name === "MongoError") {
+      res.status(500).json({ error: error.message });
+    }
+
+    // Probably invalid data in the request
+    res.status(400).json({ error: error.message });
+  }
+});
 
 export default router;

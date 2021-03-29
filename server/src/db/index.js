@@ -47,4 +47,15 @@ export default {
       throw new Error(err);
     }
   },
+
+  async deleteInvestment(investment) {
+    try {
+      return client
+        .db("investments")
+        .collection("data")
+        .deleteOne({ investment });
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
