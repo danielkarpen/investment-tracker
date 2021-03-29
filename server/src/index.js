@@ -10,7 +10,8 @@ app.get("/", (_, res) => {
 });
 
 app.use(cors({ origin: "http://localhost:3000" }));
-// All routes will be receiving JSON in `req.body`
+
+// Parse JSON as it comes in
 app.use(express.json());
 
 // Route any requests made with path '/example'...
