@@ -1,22 +1,12 @@
-import { Box } from '@chakra-ui/react';
-import api from 'api';
-import { InvestmentView } from 'components';
-import { AuthContext } from 'context';
+import { AuthContext, InvestmentsContext } from 'context';
 import { useContext, useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
 
 function View() {
   const { loggedInUser } = useContext(AuthContext);
+  const { investments } = useContext(InvestmentsContext);
   const history = useHistory();
   const { id } = useParams();
-
-  console.log(`👀 ${id}`);
-
-  const fetchInvestments = async () => {
-    const results = await api.db.index({ email: loggedInUser?.email });
-    return results;
-  };
 
   useEffect(() => {
     if (!loggedInUser) {
@@ -24,24 +14,13 @@ function View() {
     }
   }, [history, loggedInUser]);
 
-  const { isError, data, error } = useQuery('investments', fetchInvestments, {
-    enabled: Boolean(loggedInUser),
-  });
-
-  if (isError) {
-    return <Box className="text-red-500">{error.message}</Box>;
-  }
+  const activeInvestment = investments?.find(
+    investment => investment._id === id
+  );
 
   return (
     <>
-      {data?.map(({ _id: id, investment, value, partners }) => (
-        <InvestmentView
-          key={id}
-          investment={investment}
-          value={value}
-          partners={partners}
-        />
-      ))}
+      <p>{activeInvestment?.investment}</p>
     </>
   );
 }
