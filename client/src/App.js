@@ -2,7 +2,7 @@ import { Box, ChakraProvider, Grid, theme } from '@chakra-ui/react';
 import api from 'api';
 import { AuthContext } from 'context';
 import Layout from 'layout';
-import { AboutPage, DashboardPage, HomePage, LoginPage, ViewPage } from 'pages';
+import { AboutPage, DashboardPage, HomePage, ViewPage } from 'pages';
 import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -45,9 +45,7 @@ function App() {
                     <Route exact path="/about">
                       <AboutPage />
                     </Route>
-                    <Route exact path="/login">
-                      <LoginPage />
-                    </Route>
+
                     <Route exact path="/view">
                       <ViewPage />
                     </Route>
