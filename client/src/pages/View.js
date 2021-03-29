@@ -4,11 +4,14 @@ import { InvestmentView } from 'components';
 import { AuthContext } from 'context';
 import { useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 function View() {
   const { loggedInUser } = useContext(AuthContext);
   const history = useHistory();
+  const { id } = useParams();
+
+  console.log(`👀 ${id}`);
 
   const fetchInvestments = async () => {
     const results = await api.db.index({ email: loggedInUser?.email });

@@ -2,7 +2,7 @@ import { Button, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function InvestmentCard({ investment, value }) {
+function InvestmentCard({ id, investment, value }) {
   return (
     <Table variant="simple">
       <Thead>
@@ -17,7 +17,7 @@ function InvestmentCard({ investment, value }) {
           <Td>{investment}</Td>
           <Td>{value}</Td>
           <Td>
-            <Link to="/view">
+            <Link to={`/${id}`}>
               <Button colorScheme="blue">View</Button>
             </Link>
           </Td>
@@ -28,6 +28,7 @@ function InvestmentCard({ investment, value }) {
 }
 
 InvestmentCard.propTypes = {
+  id: PropTypes.string.isRequired,
   investment: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
 };

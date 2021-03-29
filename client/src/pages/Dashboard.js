@@ -40,8 +40,13 @@ function Dashboard() {
           : loggedInUser?.displayName}
       </p>
       <InvestmentForm />
-      {data?.map(({ _id: id, investment, value }) => (
-        <InvestmentCard key={id} investment={investment} value={value} />
+      {data?.map(({ _id: id, investment: investmentName, value }) => (
+        <InvestmentCard
+          key={id}
+          id={id}
+          investment={investmentName}
+          value={value}
+        />
       ))}
     </>
   );

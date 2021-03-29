@@ -46,7 +46,8 @@ function App() {
                       <AboutPage />
                     </Route>
 
-                    <Route exact path="/view">
+                    {/* Dynamic Routing */}
+                    <Route exact path="/:id">
                       <ViewPage />
                     </Route>
                   </Switch>
