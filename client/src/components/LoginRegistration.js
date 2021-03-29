@@ -34,12 +34,13 @@ function LoginRegistrationForm() {
   const { loggedInUser, toggleUser } = useContext(AuthContext);
 
   useEffect(() => {
+    // TODO{daniel.karpan}: Utilize `PrivateRoute` HOC (https://vimeo.com/529872507/1edd6e24fa)
     if (!loggedInUser) {
       history.push('/');
     }
   });
 
-  const finishRegistration = async (fname, photo) => {
+  const finishRegistration = async (fullName, photo) => {
     try {
       const photoURL = photo
         ? await getPhotoURL(photo)
@@ -48,7 +49,7 @@ function LoginRegistrationForm() {
       const currentUser = await api.auth.show();
 
       currentUser
-        .updateProfile({ displayName: fname, photoURL })
+        .updateProfile({ displayName: fullName, photoURL })
         .then(results => {
           history.push(`/dashboard`);
         })
@@ -93,13 +94,11 @@ function LoginRegistrationForm() {
 
   const handleSubmit = async function (event) {
     event.preventDefault();
-    // TODO: Actually handle all of the fields
     const submission = Object.fromEntries(new FormData(event.target));
-    console.log(submission);
-
     switch (formState.mode) {
       case 'login':
         try {
+          // Grabs all of the user info via firebase `currentUser`
           const user = await api.auth.show(
             submission.email,
             submission.password
@@ -170,7 +169,7 @@ function LoginRegistrationForm() {
       >
         <FormControl id="name" isRequired>
           <FormLabel>Full Name</FormLabel>
-          <Input type="text" name="name" />
+          <Input type="text" name="fullName" />
         </FormControl>
 
         <FormControl id="profile" className="mt-4">

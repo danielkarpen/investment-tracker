@@ -8,6 +8,8 @@ import { useHistory } from 'react-router-dom';
 
 function Dashboard() {
   const { loggedInUser } = useContext(AuthContext);
+
+  console.log(loggedInUser, 'from Dashboard');
   const history = useHistory();
 
   const fetchInvestments = async () => {
@@ -29,22 +31,13 @@ function Dashboard() {
     return <Box className="text-red-500">{error.message}</Box>;
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     // TODO: 🐛 Review this for the log out crashing!
-  //     const { email } = loggedInUser;
-  //     const resp = await api.db.index({ email });
-  //     setData(() => resp);
-  //   })();
-  // }, [loggedInUser]);
-
   return (
     <>
       <p>
         Hello,&nbsp;
         {loggedInUser?.email === process.env.REACT_APP_INVESTMENTS_ADMIN
           ? 'Admin'
-          : loggedInUser?.name}
+          : loggedInUser?.displayName}
       </p>
       <InvestmentForm />
       {data?.map(({ _id: id, investment, value }) => (
