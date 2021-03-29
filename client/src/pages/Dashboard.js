@@ -1,21 +1,33 @@
+import { Box } from '@chakra-ui/react';
+import api from 'api';
 import { InvestmentCard, InvestmentForm } from 'components';
 import { AuthContext } from 'context';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 function Dashboard() {
   const { loggedInUser } = useContext(AuthContext);
-
-  // TODO: Replace this with `react-query`
-  const [data, setData] = useState([]);
-
   const history = useHistory();
+
+  const fetchInvestments = async () => {
+    const results = await api.db.index({ email: loggedInUser?.email });
+    return results;
+  };
 
   useEffect(() => {
     if (!loggedInUser) {
       history.push('/');
     }
   }, [history, loggedInUser]);
+
+  const { isError, data, error } = useQuery('investments', fetchInvestments, {
+    enabled: Boolean(loggedInUser?.email),
+  });
+
+  if (isError) {
+    return <Box className="text-red-500">{error.message}</Box>;
+  }
 
   // useEffect(() => {
   //   (async () => {
@@ -35,7 +47,9 @@ function Dashboard() {
           : loggedInUser?.name}
       </p>
       <InvestmentForm />
-      <InvestmentCard />
+      {data?.map(({ _id: id, investment, value }) => (
+        <InvestmentCard key={id} investment={investment} value={value} />
+      ))}
     </>
   );
 }
