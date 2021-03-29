@@ -8,43 +8,42 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const InvestmentView = () => {
+function InvestmentView({ investment, value, partners }) {
   return (
     <>
       <Link to="/dashboard">
         <Button colorScheme="blue">Return to Dashboard</Button>
       </Link>
       <Table variant="simple">
-        <TableCaption>Rental Property</TableCaption>
+        <TableCaption>{investment}</TableCaption>
         <Thead>
           <Tr>
             <Th>Partners</Th>
             <Th>Ownership</Th>
-            <Th>Total Equity</Th>
+            <Th>Initial Investment</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          <Tr>
-            <Td>John</Td>
-            <Td>50%</Td>
-            <Td>$70,000</Td>
-          </Tr>
-          <Tr>
-            <Td>Jacob</Td>
-            <Td>30%</Td>
-            <Td>$42,000</Td>
-          </Tr>
-          <Tr>
-            <Td>Jingleheimer</Td>
-            <Td>20%</Td>
-            <Td>$28,000</Td>
-          </Tr>
-        </Tbody>
+        {partners.map(({ id, name, ownership, contribution }) => (
+          <Tbody key={id}>
+            <Tr>
+              <Td>{name}</Td>
+              <Td>{ownership}%</Td>
+              <Td>{contribution}</Td>
+            </Tr>
+          </Tbody>
+        ))}
       </Table>
     </>
   );
-};
+}
 
+InvestmentView.propTypes = {
+  investment: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  partners: PropTypes.array.isRequired,
+  pname: PropTypes.string.isRequired,
+};
 export default InvestmentView;
