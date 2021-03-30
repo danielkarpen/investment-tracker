@@ -48,6 +48,9 @@ export default {
     }
   },
 
+  /**
+   * @params {string} investment - Mongo ID
+   */
   async deleteInvestment(investment) {
     try {
       return client
