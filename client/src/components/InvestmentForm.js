@@ -10,7 +10,6 @@ import api from 'api';
 import { AuthContext } from 'context';
 import { useContext, useReducer } from 'react';
 import { useMutation } from 'react-query';
-import { useHistory } from 'react-router-dom';
 
 // state, action (it's from the dispatcher)
 function reducer(state, { type, payload }) {
@@ -28,7 +27,6 @@ function reducer(state, { type, payload }) {
 
 function InvestmentForm() {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
-  const history = useHistory();
   const { loggedInUser } = useContext(AuthContext);
 
   const mutation = useMutation(newInvestment => api.db.create(newInvestment));
@@ -41,8 +39,9 @@ function InvestmentForm() {
     }
   };
 
-  const handleSubmit = async function (event) {
+  const handleSubmit = function (event) {
     event.preventDefault();
+    event.target.reset();
 
     const input = Object.fromEntries(new FormData(event.target));
     const investment = {
@@ -92,20 +91,6 @@ function InvestmentForm() {
           <FormLabel>Contribution</FormLabel>
           <Input type="number" name="contribution" />
         </FormControl>
-
-        {/* <FormControl id="name" isRequired>
-          <FormLabel>Partner Name</FormLabel>
-          <Input type="text" name="name" />
-        </FormControl>
-
-
-
-
-
-        <FormControl id="email" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" name="email" />
-        </FormControl> */}
 
         <ButtonGroup variant="outline" spacing="6">
           <Button type="submit" colorScheme="green">
