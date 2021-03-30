@@ -7,7 +7,8 @@ import {
   Input,
 } from '@chakra-ui/react';
 import api from 'api';
-import { useReducer } from 'react';
+import { AuthContext } from 'context';
+import { useContext, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // state, action (it's from the dispatcher)
@@ -27,6 +28,15 @@ function reducer(state, { type, payload }) {
 function InvestmentForm() {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const history = useHistory();
+  const { loggedInUser } = useContext(AuthContext);
+  // const [input, setInput] = useState({
+  //   investment: '',
+  //   value: '',
+  //   name: '',
+  //   ownership: '',
+  //   contribution: '',
+  //   email: '',
+  // });
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Investment') {
@@ -37,22 +47,23 @@ function InvestmentForm() {
   };
 
   const handleSubmit = async function (event) {
-    event.preventDefault();
-    // TODO: Actually handle all of the fields
-    const investment = Object.fromEntries(new FormData(event.target));
-    console.log(investment);
+    // event.preventDefault();
 
-    switch (formState.mode) {
-      case 'collapsed':
-        break;
-      case 'expanded':
-        api.auth.create(investment.name, investment.partners).catch(error => {
-          dispatch({ type: 'update-info', payload: error.message });
-        });
-        break;
-      default:
-        throw new Error('Illegal 🙅🏾‍♂️ action!');
-    }
+    const input = Object.fromEntries(new FormData(event.target));
+    const investment = {
+      investment: input.investment,
+      value: Number(input.value),
+      partners: [
+        {
+          name: loggedInUser.displayName,
+          ownership: Number(input.ownership),
+          contribution: Number(input.contribution),
+          email: loggedInUser?.email,
+        },
+      ],
+    };
+    console.log(investment);
+    api.db.create(investment);
   };
 
   function renderSubmitTxt(mode) {
@@ -67,15 +78,39 @@ function InvestmentForm() {
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <Collapse in={formState.mode === 'expanded'} animateOpacity unmountOnExit>
-        <FormControl id="name" isRequired>
+        <FormControl id="investment" isRequired>
           <FormLabel>Investment Name</FormLabel>
-          <Input type="name" name="name" />
+          <Input type="text" name="investment" />
         </FormControl>
 
-        <FormControl id="Partners" isRequired>
-          <FormLabel>Primary Partner</FormLabel>
-          <Input type="text" name="partners" />
+        <FormControl id="value" isRequired>
+          <FormLabel>Current Value</FormLabel>
+          <Input type="number" name="value" />
         </FormControl>
+
+        <FormControl id="ownership" isRequired>
+          <FormLabel>Ownership Percentage</FormLabel>
+          <Input type="number" name="ownership" />
+        </FormControl>
+
+        <FormControl id="contribution" isRequired>
+          <FormLabel>Contribution</FormLabel>
+          <Input type="number" name="contribution" />
+        </FormControl>
+
+        {/* <FormControl id="name" isRequired>
+          <FormLabel>Partner Name</FormLabel>
+          <Input type="text" name="name" />
+        </FormControl>
+
+
+
+
+
+        <FormControl id="email" isRequired>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" name="email" />
+        </FormControl> */}
 
         <ButtonGroup variant="outline" spacing="6">
           <Button type="submit" colorScheme="green">

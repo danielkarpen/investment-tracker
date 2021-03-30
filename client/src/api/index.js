@@ -67,7 +67,6 @@ const api = {
      * @returns {[Object]}
      */
     async index(user) {
-      console.log('making a request with ', user);
       const resp = await ky
         .post(
           `http://localhost:8080/investments/user`,
@@ -78,6 +77,18 @@ const api = {
 
       return resp;
     },
+
+    async create(investment) {
+      const json = await ky
+        .post('http://localhost:8080/investments/investment', {
+          json: investment,
+        })
+        .json();
+
+      return json;
+    },
+
+    // TODO{daniel.karpan}: Write ✍️ a `create` service method that send JSON.
   },
 };
 
