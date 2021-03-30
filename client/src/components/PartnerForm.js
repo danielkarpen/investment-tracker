@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import api from 'api';
 import { AuthContext } from 'context';
+import PropTypes from 'prop-types';
 import { useContext, useReducer } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -25,21 +26,13 @@ function reducer(state, { type, payload }) {
   }
 }
 
-function PartnerForm() {
+function PartnerForm({ activeInvestment }) {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const history = useHistory();
   const { loggedInUser } = useContext(AuthContext);
-  // const [input, setInput] = useState({
-  //   investment: '',
-  //   value: '',
-  //   name: '',
-  //   ownership: '',
-  //   contribution: '',
-  //   email: '',
-  // });
 
   const handleClick = ({ target: { innerText } }) => {
-    if (innerText === 'Add Investment') {
+    if (innerText === 'Add Partner') {
       dispatch({ type: 'activate-expanded-mode' });
     } else {
       dispatch({ type: 'activate-collapsed-mode' });
@@ -47,18 +40,21 @@ function PartnerForm() {
   };
 
   const handleSubmit = async function (event) {
-    // event.preventDefault();
+    event.preventDefault();
 
     const input = Object.fromEntries(new FormData(event.target));
     const partner = {
-      name: input.name,
-      ownership: Number(input.ownership),
-      contribution: Number(input.contribution),
-      email: input.email,
+      investment: activeInvestment.investment,
+      partner: {
+        name: input.name,
+        ownership: Number(input.ownership),
+        contribution: Number(input.contribution),
+        email: input.email,
+      },
     };
 
     console.log(partner);
-    api.db.create(partner);
+    api.partner.create(partner);
   };
 
   function renderSubmitTxt(mode) {
@@ -71,42 +67,64 @@ function PartnerForm() {
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      <Collapse in={formState.mode === 'expanded'} animateOpacity unmountOnExit>
-        <FormControl id="name" isRequired>
-          <FormLabel>Partner Name</FormLabel>
-          <Input type="text" name="name" />
-        </FormControl>
+    <>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Collapse
+          in={formState.mode === 'expanded'}
+          animateOpacity
+          unmountOnExit
+        >
+          <FormControl id="name" isRequired>
+            <FormLabel>Partner Name</FormLabel>
+            <Input type="text" name="name" />
+          </FormControl>
 
-        <FormControl id="ownership" isRequired>
-          <FormLabel>Ownership Percentage</FormLabel>
-          <Input type="number" name="ownership" />
-        </FormControl>
+          <FormControl id="ownership" isRequired>
+            <FormLabel>Ownership Percentage</FormLabel>
+            <Input type="number" name="ownership" />
+          </FormControl>
 
-        <FormControl id="contribution" isRequired>
-          <FormLabel>Contribution</FormLabel>
-          <Input type="number" name="contribution" />
-        </FormControl>
+          <FormControl id="contribution" isRequired>
+            <FormLabel>Contribution</FormLabel>
+            <Input type="number" name="contribution" />
+          </FormControl>
 
-        <FormControl id="email" isRequired>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" name="email" />
-        </FormControl>
+          <FormControl id="email" isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input type="email" name="email" />
+          </FormControl>
 
-        <ButtonGroup variant="outline" spacing="6">
-          <Button type="submit" colorScheme="green">
-            {renderSubmitTxt(formState.mode)}
-          </Button>
-        </ButtonGroup>
-      </Collapse>
+          <ButtonGroup variant="outline" spacing="6">
+            <Button type="submit" colorScheme="green">
+              {renderSubmitTxt(formState.mode)}
+            </Button>
+          </ButtonGroup>
+        </Collapse>
 
-      <Button type="button" colorScheme="blue" onClick={handleClick}>
-        {formState.mode === 'collapsed' ? 'Add Partner' : 'Cancel'}
-      </Button>
+        <Button type="button" colorScheme="blue" onClick={handleClick}>
+          {formState.mode === 'collapsed' ? 'Add Partner' : 'Cancel'}
+        </Button>
 
-      {formState.info ? <p className="text-red-300">{formState.info}</p> : null}
-    </form>
+        {formState.info ? (
+          <p className="text-red-300">{formState.info}</p>
+        ) : null}
+      </form>
+    </>
   );
 }
+
+PartnerForm.propTypes = {
+  activeInvestment: PropTypes.shape({
+    investment: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    partners: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+        ownership: PropTypes.number,
+        contribution: PropTypes.number,
+      })
+    ).isRequired,
+  }),
+};
 
 export default PartnerForm;

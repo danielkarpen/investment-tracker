@@ -1,7 +1,8 @@
-import { InvestmentView } from 'components';
+import { Button } from '@chakra-ui/react';
+import { InvestmentView, PartnerForm } from 'components';
 import { AuthContext, InvestmentsContext } from 'context';
 import { useContext, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 function View() {
   const { loggedInUser } = useContext(AuthContext);
@@ -21,6 +22,15 @@ function View() {
 
   return (
     <>
+      <Link to="/dashboard">
+        <Button colorScheme="blue">Return to Dashboard</Button>
+      </Link>
+      {activeInvestment ? (
+        <PartnerForm activeInvestment={activeInvestment} />
+      ) : (
+        // TODO{daniel.karpan}: Do something 🆒 here.
+        <p>Loading...</p>
+      )}
       {activeInvestment ? (
         <InvestmentView investment={activeInvestment} />
       ) : (

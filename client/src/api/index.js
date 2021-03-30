@@ -87,8 +87,18 @@ const api = {
 
       return json;
     },
+  },
 
-    // TODO{daniel.karpan}: Write ✍️ a `create` service method that send JSON.
+  partner: {
+    async create(partner) {
+      const json = await ky
+        .post('http://localhost:8080/investments/investor', {
+          json: partner,
+        })
+        .json();
+
+      return json;
+    },
   },
 };
 
