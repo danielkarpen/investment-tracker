@@ -47,7 +47,7 @@ function InvestmentForm() {
   };
 
   const handleSubmit = async function (event) {
-    // event.preventDefault();
+    event.preventDefault();
 
     const input = Object.fromEntries(new FormData(event.target));
     const investment = {

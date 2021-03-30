@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableCaption,
   Tbody,
@@ -9,14 +8,10 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 function InvestmentView({ investment }) {
   return (
     <>
-      <Link to="/dashboard">
-        <Button colorScheme="blue">Return to Dashboard</Button>
-      </Link>
       <Table variant="simple">
         <TableCaption>{investment.investment}</TableCaption>
         <Thead>
