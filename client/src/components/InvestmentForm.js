@@ -9,6 +9,7 @@ import {
 import api from 'api';
 import { AuthContext } from 'context';
 import { useContext, useReducer } from 'react';
+import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 // state, action (it's from the dispatcher)
@@ -29,14 +30,8 @@ function InvestmentForm() {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const history = useHistory();
   const { loggedInUser } = useContext(AuthContext);
-  // const [input, setInput] = useState({
-  //   investment: '',
-  //   value: '',
-  //   name: '',
-  //   ownership: '',
-  //   contribution: '',
-  //   email: '',
-  // });
+
+  const mutation = useMutation(newInvestment => api.db.create(newInvestment));
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Investment') {
@@ -62,8 +57,8 @@ function InvestmentForm() {
         },
       ],
     };
-    console.log(investment);
-    api.db.create(investment);
+
+    mutation.mutate(investment);
   };
 
   function renderSubmitTxt(mode) {
