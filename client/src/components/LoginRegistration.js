@@ -172,7 +172,7 @@ function LoginRegistrationForm() {
           <Input type="text" name="fullName" />
         </FormControl>
 
-        <FormControl id="profile" className="mt-4">
+        {/* <FormControl id="profile" className="mt-4">
           <FormLabel>Upload a Profile Pic?</FormLabel>
           <Input
             type="file"
@@ -180,7 +180,7 @@ function LoginRegistrationForm() {
             className="no-border no-left-padding"
             name="file"
           />
-        </FormControl>
+        </FormControl> */}
       </Collapse>
 
       <ButtonGroup variant="outline" spacing="6">
