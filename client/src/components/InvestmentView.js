@@ -11,14 +11,14 @@ import {
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function InvestmentView({ investment, value, partners }) {
+function InvestmentView({ investment }) {
   return (
     <>
       <Link to="/dashboard">
         <Button colorScheme="blue">Return to Dashboard</Button>
       </Link>
       <Table variant="simple">
-        <TableCaption>{investment}</TableCaption>
+        <TableCaption>{investment.investment}</TableCaption>
         <Thead>
           <Tr>
             <Th>Partners</Th>
@@ -26,8 +26,8 @@ function InvestmentView({ investment, value, partners }) {
             <Th>Initial Investment</Th>
           </Tr>
         </Thead>
-        {partners.map(({ id, name, ownership, contribution }) => (
-          <Tbody key={id}>
+        {investment.partners.map(({ name, ownership, contribution }, index) => (
+          <Tbody key={index}>
             <Tr>
               <Td>{name}</Td>
               <Td>{ownership}%</Td>
@@ -41,9 +41,16 @@ function InvestmentView({ investment, value, partners }) {
 }
 
 InvestmentView.propTypes = {
-  investment: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  partners: PropTypes.array.isRequired,
-  pname: PropTypes.string.isRequired,
+  investment: PropTypes.shape({
+    investment: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    partners: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+        ownership: PropTypes.number,
+        contribution: PropTypes.number,
+      })
+    ).isRequired,
+  }),
 };
 export default InvestmentView;

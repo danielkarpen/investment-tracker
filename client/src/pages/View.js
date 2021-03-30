@@ -1,3 +1,4 @@
+import { InvestmentView } from 'components';
 import { AuthContext, InvestmentsContext } from 'context';
 import { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -20,7 +21,12 @@ function View() {
 
   return (
     <>
-      <p>{activeInvestment?.investment}</p>
+      {activeInvestment ? (
+        <InvestmentView investment={activeInvestment} />
+      ) : (
+        // TODO{daniel.karpan}: Do something 🆒 here.
+        <p>Loading...</p>
+      )}
     </>
   );
 }
