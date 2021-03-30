@@ -11,8 +11,16 @@ function Dashboard() {
   const { updateInvestments } = useContext(InvestmentsContext);
   const history = useHistory();
 
+  // TODO{Daniel K.}: Use try-catch in these asyncs
   const fetchInvestments = async () => {
     const results = await api.db.index({ email: loggedInUser?.email });
+    return results;
+  };
+
+  const handleDelete = async event => {
+    const results = await api.db.delete(
+      event.target.closest('tr').dataset.name
+    );
     return results;
   };
 
@@ -49,6 +57,7 @@ function Dashboard() {
           id={id}
           investment={investmentName}
           value={value}
+          handler={handleDelete}
         />
       ))}
     </>

@@ -35,31 +35,8 @@ const api = {
           throw new Error(error);
         });
     },
-
-    delete() {
-      return auth
-        .signOut()
-        .then(() => true)
-        .catch(error => {
-          throw new Error(error);
-        });
-    },
   },
-  photo: {
-    async create(imgFile) {
-      const fd = new FormData();
-      fd.append('file', imgFile);
-      fd.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET);
 
-      const resp = await ky
-        .post(
-          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          { body: fd }
-        )
-        .json();
-      return resp;
-    },
-  },
   db: {
     /**
      * Get all investments for either a user or for everyone if 'admin.'
@@ -69,7 +46,7 @@ const api = {
     async index(user) {
       const resp = await ky
         .post(
-          `http://localhost:8080/investments/user`,
+          `${dbBase}/investments/user`,
           // Send user ✉️ JSON as request body
           { json: user }
         )
@@ -80,8 +57,18 @@ const api = {
 
     async create(investment) {
       const json = await ky
-        .post('http://localhost:8080/investments/investment', {
+        .post(`${dbBase}/investments/investment`, {
           json: investment,
+        })
+        .json();
+
+      return json;
+    },
+
+    async delete(investment) {
+      const json = await ky
+        .delete(`${dbBase}/investments/`, {
+          json: { investment },
         })
         .json();
 
@@ -92,7 +79,7 @@ const api = {
   partner: {
     async create(partner) {
       const json = await ky
-        .post('http://localhost:8080/investments/investor', {
+        .post(`${dbBase}/investments/investor`, {
           json: partner,
         })
         .json();
