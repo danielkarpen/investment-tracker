@@ -74,6 +74,11 @@ const api = {
       return json;
     },
 
+    /**
+     * 🔥
+     * @params {string} investment - name of the investment
+     * @returns {Object}
+     */
     async delete(investment) {
       const json = await ky
         .delete(`${dbBase}/investments/`, {
