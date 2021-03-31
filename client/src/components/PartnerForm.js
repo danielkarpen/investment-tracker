@@ -10,6 +10,7 @@ import api from 'api';
 import { AuthContext } from 'context';
 import PropTypes from 'prop-types';
 import { useContext, useReducer } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 // state, action (it's from the dispatcher)
@@ -30,6 +31,14 @@ function PartnerForm({ activeInvestment }) {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const history = useHistory();
   const { loggedInUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+
+  const addPartner = useMutation(newPartner => api.partner.create(newPartner), {
+    onSuccess: () => {
+      // Tell react query to 4get about current data and re-fetch it.
+      queryClient.invalidateQueries('investments');
+    },
+  });
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Partner') {
@@ -53,8 +62,8 @@ function PartnerForm({ activeInvestment }) {
       },
     };
 
-    console.log(partner);
-    api.partner.create(partner);
+    addPartner.mutate(partner);
+    event.target.reset();
   };
 
   function renderSubmitTxt(mode) {
