@@ -12,13 +12,17 @@ import PropTypes from 'prop-types';
 function InvestmentView({ investment }) {
   return (
     <>
+      <h1>{investment.investment}</h1>
+      <h2>Value: ${investment.value}</h2>
+
       <Table variant="simple">
-        <TableCaption>{investment.investment}</TableCaption>
+        <TableCaption></TableCaption>
         <Thead>
           <Tr>
             <Th>Partners</Th>
             <Th>Ownership</Th>
             <Th>Initial Investment</Th>
+            <Th>Current Value</Th>
           </Tr>
         </Thead>
         {investment.partners.map(({ name, ownership, contribution }, index) => (
@@ -26,7 +30,8 @@ function InvestmentView({ investment }) {
             <Tr>
               <Td>{name}</Td>
               <Td>{ownership}%</Td>
-              <Td>{contribution}</Td>
+              <Td>${contribution}</Td>
+              <Td>${investment.value * (ownership * 0.01)}</Td>
             </Tr>
           </Tbody>
         ))}
