@@ -39,9 +39,8 @@ function InvestmentForm() {
     }
   };
 
-  const handleSubmit = function (event) {
+  const handleSubmit = async function (event) {
     event.preventDefault();
-    event.target.reset();
 
     const input = Object.fromEntries(new FormData(event.target));
     const investment = {
@@ -57,7 +56,11 @@ function InvestmentForm() {
       ],
     };
 
-    mutation.mutate(investment);
+    console.log('going to send an investment', investment);
+    await api.db.create(investment);
+    event.target.reset();
+    // TODO{Daniel K.}: Reset the form after it successfully creates.
+    // mutation.mutate(investment);
   };
 
   function renderSubmitTxt(mode) {
