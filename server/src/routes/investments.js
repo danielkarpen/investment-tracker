@@ -103,7 +103,17 @@ router.post(
 router.delete("/", async (req, res) => {
   try {
     // TODO{daniel.karpan}: Consider if only admin can delete...
-    res.status(202).json(await db.deleteInvestment(req.body.investment));
+    const results = await db.deleteInvestment(req.body.investment);
+
+    // TODO{daniel}: Send back more useful results in the JSON response
+    if (results.result.n === 1) {
+      res.status(202).json(req.body.investment);
+      return;
+    }
+
+    res
+      .status(400)
+      .json({ error: "Error while deleting 🔥. Maybe this doesn't exist. 🤷🏾‍♂️" });
   } catch (error) {
     if (error.name === "MongoError") {
       res.status(500).json({ error: error.message });
