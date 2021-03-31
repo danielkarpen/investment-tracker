@@ -68,7 +68,16 @@ function PartnerForm({ activeInvestment }) {
 
   return (
     <>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-2 min-w-208" onSubmit={handleSubmit}>
+        <Button
+          type="button"
+          className="mt-2 min-w-208"
+          colorScheme="blue"
+          variant="outline"
+          onClick={handleClick}
+        >
+          {formState.mode === 'collapsed' ? 'Add Partner' : 'Cancel'}
+        </Button>
         <Collapse
           in={formState.mode === 'expanded'}
           animateOpacity
@@ -95,15 +104,11 @@ function PartnerForm({ activeInvestment }) {
           </FormControl>
 
           <ButtonGroup variant="outline" spacing="6">
-            <Button type="submit" colorScheme="green">
+            <Button type="submit" className="mt-4" colorScheme="green">
               {renderSubmitTxt(formState.mode)}
             </Button>
           </ButtonGroup>
         </Collapse>
-
-        <Button type="button" colorScheme="blue" onClick={handleClick}>
-          {formState.mode === 'collapsed' ? 'Add Partner' : 'Cancel'}
-        </Button>
 
         {formState.info ? (
           <p className="text-red-300">{formState.info}</p>

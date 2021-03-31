@@ -20,14 +20,22 @@ const Header = () => {
       });
   }
   return (
-    <header className="flex justify-between">
+    <header className="flex flex-row justify-between">
       <Heading fontSize="xl">Investment Tracker</Heading>
-      {loggedInUser ? (
-        <Button colorScheme="orange" size="sm" onClick={handleClick}>
-          Logout
-        </Button>
-      ) : null}
-      <ColorModeSwitcher />
+      <div>
+        {loggedInUser ? (
+          <Button
+            colorScheme="orange"
+            variant="outline"
+            size="sm"
+            onClick={handleClick}
+            className="justify-self-end"
+          >
+            Logout
+          </Button>
+        ) : null}
+        <ColorModeSwitcher className="justify-self-end place-content-end" />
+      </div>
     </header>
   );
 };

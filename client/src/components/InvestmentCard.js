@@ -20,11 +20,13 @@ function InvestmentCard({ userInvestments, handler }) {
             <Td>${value}</Td>
             <Td>
               <Link to={`/${id}`}>
-                <Button colorScheme="blue">View</Button>
+                <Button colorScheme="blue" variant="outline">
+                  View
+                </Button>
               </Link>
             </Td>
             <Td>
-              <Button colorScheme="blue" onClick={handler}>
+              <Button colorScheme="blue" variant="outline" onClick={handler}>
                 Delete
               </Button>
             </Td>

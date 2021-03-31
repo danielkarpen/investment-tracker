@@ -96,13 +96,19 @@ function InvestmentForm() {
         </FormControl>
 
         <ButtonGroup variant="outline" spacing="6">
-          <Button type="submit" colorScheme="green">
+          <Button type="submit" className="mt-4" colorScheme="green">
             {renderSubmitTxt(formState.mode)}
           </Button>
         </ButtonGroup>
       </Collapse>
 
-      <Button type="button" colorScheme="blue" onClick={handleClick}>
+      <Button
+        type="button"
+        className=""
+        colorScheme="teal"
+        variant="outline"
+        onClick={handleClick}
+      >
         {formState.mode === 'collapsed' ? 'Add Investment' : 'Cancel'}
       </Button>
 

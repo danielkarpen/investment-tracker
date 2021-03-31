@@ -22,18 +22,31 @@ function View() {
 
   return (
     <>
-      <Link to="/dashboard">
-        <Button colorScheme="blue">Return to Dashboard</Button>
-      </Link>
-      <h1>
-        {activeInvestment.investment} - Value: ${activeInvestment.value}{' '}
-      </h1>
-      {activeInvestment ? (
-        <PartnerForm activeInvestment={activeInvestment} />
-      ) : (
-        // TODO{daniel.karpan}: Do something 🆒 here.
-        <p>Loading...</p>
-      )}
+      <div className="flex flex-row justify-between">
+        <h1>
+          {activeInvestment.investment} - Value: ${activeInvestment.value}{' '}
+        </h1>
+      </div>
+      <div>
+        <Link to="/dashboard">
+          <Button
+            colorScheme="red"
+            className="mt-2 min-w-208"
+            variant="outline"
+          >
+            Return to Dashboard
+          </Button>
+        </Link>
+        {activeInvestment ? (
+          <PartnerForm
+            className="min-w-208"
+            activeInvestment={activeInvestment}
+          />
+        ) : (
+          // TODO{daniel.karpan}: Do something 🆒 here.
+          <p>Loading...</p>
+        )}
+      </div>
       {activeInvestment ? (
         <>
           <InvestmentView investment={activeInvestment} />
