@@ -35,6 +35,15 @@ const api = {
           throw new Error(error);
         });
     },
+
+    delete() {
+      return auth
+        .signOut()
+        .then(() => true)
+        .catch(error => {
+          throw new Error(error);
+        });
+    },
   },
 
   db: {
