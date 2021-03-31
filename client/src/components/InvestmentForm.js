@@ -29,7 +29,9 @@ function InvestmentForm() {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const { loggedInUser } = useContext(AuthContext);
 
-  const mutation = useMutation(newInvestment => api.db.create(newInvestment));
+  const addInvestment = useMutation(newInvestment =>
+    api.db.create(newInvestment)
+  );
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Investment') {
@@ -56,11 +58,8 @@ function InvestmentForm() {
       ],
     };
 
-    console.log('going to send an investment', investment);
-    await api.db.create(investment);
+    addInvestment.mutate(investment);
     event.target.reset();
-    // TODO{Daniel K.}: Reset the form after it successfully creates.
-    // mutation.mutate(investment);
   };
 
   function renderSubmitTxt(mode) {
