@@ -25,6 +25,9 @@ function View() {
       <Link to="/dashboard">
         <Button colorScheme="blue">Return to Dashboard</Button>
       </Link>
+      <h1>
+        {activeInvestment.investment} - Value: ${activeInvestment.value}{' '}
+      </h1>
       {activeInvestment ? (
         <PartnerForm activeInvestment={activeInvestment} />
       ) : (
@@ -32,7 +35,9 @@ function View() {
         <p>Loading...</p>
       )}
       {activeInvestment ? (
-        <InvestmentView investment={activeInvestment} />
+        <>
+          <InvestmentView investment={activeInvestment} />
+        </>
       ) : (
         // TODO{daniel.karpan}: Do something 🆒 here.
         <p>Loading...</p>
