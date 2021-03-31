@@ -13,26 +13,28 @@ function InvestmentCard({ userInvestments, handler }) {
           <Th></Th>
         </Tr>
       </Thead>
-      {userInvestments?.map(({ _id: id, investment, value }, index) => (
-        <Tbody key={index}>
-          <Tr data-name={userInvestments.investment}>
-            <Td>{investment}</Td>
-            <Td>${value}</Td>
-            <Td>
-              <Link to={`/${id}`}>
-                <Button colorScheme="blue" variant="outline">
-                  View
+      {userInvestments?.map(
+        ({ _id: id, investment: investmentName, value }, index) => (
+          <Tbody key={index}>
+            <Tr data-name={investmentName}>
+              <Td>{investmentName}</Td>
+              <Td>${value}</Td>
+              <Td>
+                <Link to={`/${id}`}>
+                  <Button colorScheme="blue" variant="outline">
+                    View
+                  </Button>
+                </Link>
+              </Td>
+              <Td>
+                <Button colorScheme="blue" variant="outline" onClick={handler}>
+                  Delete
                 </Button>
-              </Link>
-            </Td>
-            <Td>
-              <Button colorScheme="blue" variant="outline" onClick={handler}>
-                Delete
-              </Button>
-            </Td>
-          </Tr>
-        </Tbody>
-      ))}
+              </Td>
+            </Tr>
+          </Tbody>
+        )
+      )}
     </Table>
   );
 }
