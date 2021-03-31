@@ -2,7 +2,7 @@ import { Button, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function InvestmentCard({ id, investment, value, handler }) {
+function InvestmentCard({ userInvestments, handler }) {
   return (
     <Table variant="simple">
       <Thead>
@@ -13,30 +13,30 @@ function InvestmentCard({ id, investment, value, handler }) {
           <Th></Th>
         </Tr>
       </Thead>
-      <Tbody>
-        <Tr data-name={investment}>
-          <Td>{investment}</Td>
-          <Td>{value}</Td>
-          <Td>
-            <Link to={`/${id}`}>
-              <Button colorScheme="blue">View</Button>
-            </Link>
-          </Td>
-          <Td>
-            <Button colorScheme="blue" onClick={handler}>
-              Delete
-            </Button>
-          </Td>
-        </Tr>
-      </Tbody>
+      {userInvestments?.map(({ _id: id, investment, value }, index) => (
+        <Tbody key={index}>
+          <Tr data-name={userInvestments.investment}>
+            <Td>{investment}</Td>
+            <Td>${value}</Td>
+            <Td>
+              <Link to={`/${id}`}>
+                <Button colorScheme="blue">View</Button>
+              </Link>
+            </Td>
+            <Td>
+              <Button colorScheme="blue" onClick={handler}>
+                Delete
+              </Button>
+            </Td>
+          </Tr>
+        </Tbody>
+      ))}
     </Table>
   );
 }
 
 InvestmentCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  investment: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  userInvestments: PropTypes.array.isRequired,
   handler: PropTypes.func.isRequired,
 };
 
