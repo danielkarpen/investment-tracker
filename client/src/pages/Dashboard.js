@@ -3,13 +3,24 @@ import api from 'api';
 import { InvestmentCard, InvestmentForm } from 'components';
 import { AuthContext, InvestmentsContext } from 'context';
 import { useContext, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 function Dashboard() {
   const { loggedInUser } = useContext(AuthContext);
   const { updateInvestments } = useContext(InvestmentsContext);
   const history = useHistory();
+
+  const queryClient = useQueryClient();
+
+  const deleteInvestment = useMutation(
+    async investmentName4Deletion => {
+      await api.db.delete(investmentName4Deletion);
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('investments'),
+    }
+  );
 
   // TODO{Daniel K.}: Use try-catch in these asyncs
   const fetchInvestments = async () => {
@@ -18,10 +29,7 @@ function Dashboard() {
   };
 
   const handleDelete = async event => {
-    const results = await api.db.delete(
-      event.target.closest('tr').dataset.name
-    );
-    return results;
+    deleteInvestment.mutate(event.target.closest('tr').dataset.name);
   };
 
   useEffect(() => {
