@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useToast } from '@chakra-ui/react';
 import api from 'api';
 import { InvestmentCard, InvestmentForm } from 'components';
 import { AuthContext, InvestmentsContext } from 'context';
@@ -12,13 +12,23 @@ function Dashboard() {
   const history = useHistory();
 
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const deleteInvestment = useMutation(
     async investmentName4Deletion => {
       await api.db.delete(investmentName4Deletion);
     },
     {
-      onSuccess: () => queryClient.invalidateQueries('investments'),
+      onSuccess: data => {
+        queryClient.invalidateQueries('investments');
+        toast({
+          title: 'Investment Deleted',
+          description: data,
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+        });
+      },
     }
   );
 
