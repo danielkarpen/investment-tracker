@@ -9,7 +9,7 @@ import {
 import api from 'api';
 import { AuthContext } from 'context';
 import { useContext, useReducer } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 // state, action (it's from the dispatcher)
 function reducer(state, { type, payload }) {
@@ -28,9 +28,16 @@ function reducer(state, { type, payload }) {
 function InvestmentForm() {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const { loggedInUser } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
-  const addInvestment = useMutation(newInvestment =>
-    api.db.create(newInvestment)
+  const addInvestment = useMutation(
+    newInvestment => api.db.create(newInvestment),
+    {
+      onSuccess: () => {
+        // Tell react query to 4get about current data and re-fetch it.
+        queryClient.invalidateQueries('investments');
+      },
+    }
   );
 
   const handleClick = ({ target: { innerText } }) => {

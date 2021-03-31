@@ -30,6 +30,7 @@ function Dashboard() {
     }
   }, [history, loggedInUser]);
 
+  // 'investments' will be referenced in InvestmentForm to update the results
   const { isError, data, error } = useQuery('investments', fetchInvestments, {
     enabled: Boolean(loggedInUser?.email),
   });
