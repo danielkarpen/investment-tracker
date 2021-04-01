@@ -27,7 +27,7 @@ function InvestmentCard({ userInvestments, handler }) {
                 </Link>
               </Td>
               <Td>
-                <Button colorScheme="blue" variant="outline" onClick={handler}>
+                <Button colorScheme="red" variant="outline" onClick={handler}>
                   Delete
                 </Button>
               </Td>

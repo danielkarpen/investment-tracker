@@ -80,6 +80,15 @@ function InvestmentForm() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <Button
+        type="button"
+        className=""
+        colorScheme="blue"
+        variant="outline"
+        onClick={handleClick}
+      >
+        {formState.mode === 'collapsed' ? 'Add Investment' : 'Cancel'}
+      </Button>
       <Collapse in={formState.mode === 'expanded'} animateOpacity unmountOnExit>
         <FormControl id="investment" isRequired>
           <FormLabel>Investment Name</FormLabel>
@@ -107,16 +116,6 @@ function InvestmentForm() {
           </Button>
         </ButtonGroup>
       </Collapse>
-
-      <Button
-        type="button"
-        className=""
-        colorScheme="teal"
-        variant="outline"
-        onClick={handleClick}
-      >
-        {formState.mode === 'collapsed' ? 'Add Investment' : 'Cancel'}
-      </Button>
 
       {formState.info ? <p className="text-red-300">{formState.info}</p> : null}
     </form>

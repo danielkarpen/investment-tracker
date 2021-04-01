@@ -11,14 +11,14 @@ const Footer = () => (
       </Text>
 
       {/* TODO: Replace links! */}
-      <Link href="https://www.github.com/manavm1990/" isExternal>
+      <Link href="https://www.github.com/danielkarpen/" isExternal>
         <IconButton aria-label="GitHub" icon={<GoMarkGithub />} size="sm" />
 
         {/* TODO: Resolve this component - might be a Chakra UI issue. */}
         {/* <ExternalLinkIcon mx="2px" /> */}
       </Link>
 
-      <Link href="https://www.linkedin.com/in/manavm1990/" isExternal>
+      <Link href="https://www.linkedin.com/in/danielkarpen/" isExternal>
         <IconButton aria-label="LinkedIn" icon={<FaLinkedinIn />} size="sm" />
         {/* <ExternalLinkIcon mx="2px" /> */}
       </Link>
