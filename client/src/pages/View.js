@@ -8,7 +8,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 
 function View() {
   const { loggedInUser } = useContext(AuthContext);
-  const { investments, updateInvestments } = useContext(InvestmentsContext);
+  const { investments } = useContext(InvestmentsContext);
   const history = useHistory();
   const { id } = useParams();
 
@@ -20,17 +20,18 @@ function View() {
     }
   }, [history, loggedInUser]);
 
-  const addPartner = useMutation(newPartner => api.partner.create(newPartner), {
-    /**
-     * TODO: Get back either all of the investments or the active investment
-     */
-    onSuccess: data => {
-      // Tell react query to 4get about current data and re-fetch it.
-      queryClient.invalidateQueries('investments');
+  const addPartner = useMutation(
+    (newPartner, investmentName) =>
+      api.partner.create(newPartner, investmentName),
+    {
+      onSuccess: data => {
+        // Tell react query to 4get about current data and re-fetch it.
+        queryClient.invalidateQueries('investments');
 
-      console.log('h', data);
-    },
-  });
+        console.log('h', data);
+      },
+    }
+  );
 
   const handleSubmit = async function (event) {
     event.preventDefault();
@@ -46,7 +47,7 @@ function View() {
       },
     };
 
-    addPartner.mutate(partner);
+    addPartner.mutate(partner, event.target.dataset.active);
     event.target.reset();
   };
 

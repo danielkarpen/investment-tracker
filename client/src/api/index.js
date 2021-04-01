@@ -91,10 +91,10 @@ const api = {
   },
 
   partner: {
-    async create(partner) {
+    async create(partner, investmentName) {
       const json = await ky
         .post(`${dbBase}/investments/investor`, {
-          json: partner,
+          json: { investment: investmentName, partner },
         })
         .json();
 

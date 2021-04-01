@@ -82,7 +82,7 @@ router.post(
 
   /**
    * Add an investor to an investment
-   * @params {Request} req
+   * @params {Request} req - investment name and partner info
    * @params {Response} resp
    */
   async (req, res) => {
@@ -94,8 +94,9 @@ router.post(
         req.body.partner
       );
 
-      if (results.n === 1) {
+      if (results.result.n === 1) {
         res.status(201).json(req.body);
+        return;
       }
       res.status(400).json({ error: "Unable to updated!" });
     } catch (error) {
@@ -109,7 +110,6 @@ router.delete("/", async (req, res) => {
     // TODO{daniel.karpan}: Consider if only admin can delete...
     const results = await db.deleteInvestment(req.body.investment);
 
-    // TODO{daniel}: Send back more useful results in the JSON response
     if (results.result.n === 1) {
       res.status(202).json(req.body.investment);
       return;

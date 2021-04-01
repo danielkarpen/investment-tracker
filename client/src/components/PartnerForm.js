@@ -6,10 +6,8 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react';
-import { AuthContext } from 'context';
 import PropTypes from 'prop-types';
-import { useContext, useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useReducer } from 'react';
 
 // state, action (it's from the dispatcher)
 function reducer(state, { type, payload }) {
@@ -27,8 +25,6 @@ function reducer(state, { type, payload }) {
 
 function PartnerForm({ activeInvestment, handler }) {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
-  const history = useHistory();
-  const { loggedInUser } = useContext(AuthContext);
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Partner') {
@@ -49,7 +45,11 @@ function PartnerForm({ activeInvestment, handler }) {
 
   return (
     <>
-      <form className="flex flex-col gap-2 min-w-208" onSubmit={handler}>
+      <form
+        className="flex flex-col gap-2 min-w-208"
+        onSubmit={handler}
+        data-active={activeInvestment}
+      >
         <Button
           type="button"
           className="mt-2 min-w-208"
