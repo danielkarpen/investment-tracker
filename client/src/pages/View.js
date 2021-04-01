@@ -20,29 +20,32 @@ function View() {
     }
   }, [history, loggedInUser]);
 
-  const addPartner = useMutation(
-    payload => api.partner.create(payload)
-    // {
-    //   onSuccess: data => {
-    //     // Tell react query to 4get about current data and re-fetch it.
-    //     queryClient.setQueryData('investments', currentInvestments => {
-    //       /**
-    //        * 1. Find the updated investment in the `currentData`
-    //        * 2. Add the new partner to that data
-    //        */
-    //       console.log(
-    //         'AFTER SUCCSS DATA',
-    //         currentInvestments.find(
-    //           ({ investment: investmentName }) =>
-    //             investmentName === data.investment
-    //         )
-    //       );
+  const addPartner = useMutation(payload => api.partner.create(payload), {
+    onSuccess: data => {
+      /**
+       * 'investments' matches the name of the query that is used
+       * by `react-query` in Dashboard.
+       */
+      queryClient.setQueryData('investments', oldInvestments => {
+        // Which investment should be updated from the old data?
+        const investment2Update = oldInvestments.find(
+          ({ investment }) => investment === data.investment
+        );
 
-    //       return currentInvestments;
-    //     });
-    //   },
-    // }
-  );
+        /**
+         * Update the partners by spreading out the existing partners
+         * and merging the new partner from the returned server data.
+         */
+        investment2Update.partners = [
+          ...investment2Update.partners,
+          data.partner,
+        ];
+
+        // `oldInvestments` is really the updated investments
+        return oldInvestments;
+      });
+    },
+  });
 
   const handleSubmit = async function (event) {
     event.preventDefault();
