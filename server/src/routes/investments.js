@@ -89,11 +89,15 @@ router.post(
     try {
       // TODO{daniel.karpan}: Verify ID for proper adding...
 
-      res
-        .status(201)
-        .json(
-          await db.addPartnerToInvestment(req.body.investment, req.body.partner)
-        );
+      const results = await db.addPartnerToInvestment(
+        req.body.investment,
+        req.body.partner
+      );
+
+      if (results.n === 1) {
+        res.status(201).json(req.body);
+      }
+      res.status(400).json({ error: "Unable to updated!" });
     } catch (error) {
       throw new Error(error);
     }

@@ -11,10 +11,10 @@ import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 
 function InvestmentView({ investment }) {
-  const labels = investment.partners.map(_ => {
+  const labels = investment?.partners.map(_ => {
     return _.name;
   });
-  const ownershipData = investment.partners.map(_ => {
+  const ownershipData = investment?.partners.map(_ => {
     return _.ownership;
   });
   var demoData = {
@@ -68,16 +68,18 @@ function InvestmentView({ investment }) {
             <Th>Current Value</Th>
           </Tr>
         </Thead>
-        {investment.partners.map(({ name, ownership, contribution }, index) => (
-          <Tbody key={index}>
-            <Tr>
-              <Td>{name}</Td>
-              <Td>{ownership}%</Td>
-              <Td>${contribution}</Td>
-              <Td>${investment.value * (ownership * 0.01)}</Td>
-            </Tr>
-          </Tbody>
-        ))}
+        {investment?.partners.map(
+          ({ name, ownership, contribution }, index) => (
+            <Tbody key={index}>
+              <Tr>
+                <Td>{name}</Td>
+                <Td>{ownership}%</Td>
+                <Td>${contribution}</Td>
+                <Td>${investment.value * (ownership * 0.01)}</Td>
+              </Tr>
+            </Tbody>
+          )
+        )}
       </Table>
       <Bar data={demoData} width={100} height={50} options={options} />
     </>

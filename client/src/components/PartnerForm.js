@@ -6,11 +6,9 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react';
-import api from 'api';
 import { AuthContext } from 'context';
 import PropTypes from 'prop-types';
 import { useContext, useReducer } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 
 // state, action (it's from the dispatcher)
@@ -27,18 +25,10 @@ function reducer(state, { type, payload }) {
   }
 }
 
-function PartnerForm({ activeInvestment }) {
+function PartnerForm({ activeInvestment, handler }) {
   const [formState, dispatch] = useReducer(reducer, { mode: 'collapsed' });
   const history = useHistory();
   const { loggedInUser } = useContext(AuthContext);
-  const queryClient = useQueryClient();
-
-  const addPartner = useMutation(newPartner => api.partner.create(newPartner), {
-    onSuccess: () => {
-      // Tell react query to 4get about current data and re-fetch it.
-      queryClient.invalidateQueries('investments');
-    },
-  });
 
   const handleClick = ({ target: { innerText } }) => {
     if (innerText === 'Add Partner') {
@@ -46,24 +36,6 @@ function PartnerForm({ activeInvestment }) {
     } else {
       dispatch({ type: 'activate-collapsed-mode' });
     }
-  };
-
-  const handleSubmit = async function (event) {
-    event.preventDefault();
-
-    const input = Object.fromEntries(new FormData(event.target));
-    const partner = {
-      investment: activeInvestment.investment,
-      partner: {
-        name: input.name,
-        ownership: Number(input.ownership),
-        contribution: Number(input.contribution),
-        email: input.email,
-      },
-    };
-
-    addPartner.mutate(partner);
-    event.target.reset();
   };
 
   function renderSubmitTxt(mode) {
@@ -77,7 +49,7 @@ function PartnerForm({ activeInvestment }) {
 
   return (
     <>
-      <form className="flex flex-col gap-2 min-w-208" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-2 min-w-208" onSubmit={handler}>
         <Button
           type="button"
           className="mt-2 min-w-208"
@@ -128,6 +100,7 @@ function PartnerForm({ activeInvestment }) {
 }
 
 PartnerForm.propTypes = {
+  handler: PropTypes.func.isRequired,
   activeInvestment: PropTypes.shape({
     investment: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
