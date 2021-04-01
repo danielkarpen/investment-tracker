@@ -21,25 +21,36 @@ function View() {
   }, [history, loggedInUser]);
 
   const addPartner = useMutation(
-    (newPartner, investmentName) =>
-      api.partner.create(newPartner, investmentName),
-    {
-      onSuccess: data => {
-        // Tell react query to 4get about current data and re-fetch it.
-        queryClient.invalidateQueries('investments');
+    payload => api.partner.create(payload)
+    // {
+    //   onSuccess: data => {
+    //     // Tell react query to 4get about current data and re-fetch it.
+    //     queryClient.setQueryData('investments', currentInvestments => {
+    //       /**
+    //        * 1. Find the updated investment in the `currentData`
+    //        * 2. Add the new partner to that data
+    //        */
+    //       console.log(
+    //         'AFTER SUCCSS DATA',
+    //         currentInvestments.find(
+    //           ({ investment: investmentName }) =>
+    //             investmentName === data.investment
+    //         )
+    //       );
 
-        console.log('h', data);
-      },
-    }
+    //       return currentInvestments;
+    //     });
+    //   },
+    // }
   );
 
   const handleSubmit = async function (event) {
     event.preventDefault();
 
     const input = Object.fromEntries(new FormData(event.target));
-    const partner = {
-      investment: activeInvestment.investment,
-      partner: {
+    const payload = {
+      investmentName: activeInvestment.investment,
+      newPartner: {
         name: input.name,
         ownership: Number(input.ownership),
         contribution: Number(input.contribution),
@@ -47,7 +58,7 @@ function View() {
       },
     };
 
-    addPartner.mutate(partner, event.target.dataset.active);
+    addPartner.mutate(payload);
     event.target.reset();
   };
 
