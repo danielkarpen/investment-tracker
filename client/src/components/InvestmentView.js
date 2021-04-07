@@ -81,7 +81,8 @@ function InvestmentView({ investment }) {
           )
         )}
       </Table>
-      <Bar data={demoData} width={100} height={50} options={options} />
+
+      <Bar data={demoData} width={50} height={50} options={options} />
     </>
   );
 }

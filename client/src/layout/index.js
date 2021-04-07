@@ -1,11 +1,11 @@
-import { Footer, Header, Main } from 'components';
+import { Header, Main } from 'components';
 import PropTypes from 'prop-types';
 
 const Layout = ({ children }) => (
   <div className="container mx-auto">
     <Header />
     <Main>{children}</Main>
-    <Footer />
+    {/* <Footer /> */}
   </div>
 );
 
